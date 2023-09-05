@@ -164,7 +164,7 @@ plt.show()
 # Build EES gene correlation dataframe and tables. Calculate and include Log2FC in tables.
 # Note: Will give an expected divide by zero error
 
-Disable display of divide by zero warning
+# Disable display of divide by zero warning
 import warnings;
 warnings.filterwarnings('ignore');
 
