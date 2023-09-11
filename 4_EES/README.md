@@ -71,7 +71,7 @@ This copy of the terminal app will now open with Rosetta by default, meaning the
 
 **5. Install Homebrew for x86**
 
-You need this in order to install other things specifically in the x86 environment. Use the same command - see Step 1 above, just **install it in your Rosetta terminal**). By running the install command in the Rosetta terminal, Homebrew will automatically install the x86 version. The main difference is where Homebrew will be installed and where it will put packages you install using `brew`
+You need this in order to install other things specifically in the x86 environment. Use the same command - see Step 1 above, just **install it in your Rosetta terminal**. By running the install command in the Rosetta terminal, Homebrew will automatically install the x86 version. The main difference is where Homebrew will be installed and where it will put packages you install using `brew`
 
 NOTE: You *don't* need to install pyenv again in the Rosetta terminal.
 
