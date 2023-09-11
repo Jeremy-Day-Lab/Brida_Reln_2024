@@ -176,9 +176,16 @@ male2.lacz <- FindVariableFeatures(male2.lacz, selection.method = "vst", nfeatur
 ## ---2. INTEGRATE DATASETS----------------------------------------------------------------------------------
 
 # Save individual dataset objects
+saveRDS(male1.lacz, "male1.lacz.rds")
+saveRDS(male1.reln, "male1.reln.rds")
+saveRDS(fem1.lacz, "fem1.lacz.rds")
+saveRDS(fem1.reln, "fem1.reln.rds")
+saveRDS(fem2.lacz, "fem2.lacz.rds")
+saveRDS(fem2.reln, "fem2.reln.rds")
+saveRDS(male2.reln, "male2.reln.rds")
+saveRDS(male2.lacz, "male2.lacz.rds")
 
 # Integrate datasets
-# WHY 17 DIMENSIONS???????
 anchors.allRats <- FindIntegrationAnchors(object.list = list(male1.lacz, male1.reln, fem1.lacz, fem1.reln, fem2.lacz, fem2.reln, male2.reln, male2.lacz), dims = 1:17)
 allRats <- IntegrateData(anchorset = anchors.allRats, dims = 1:17)
 
@@ -186,23 +193,14 @@ DefaultAssay(allRats) <- "integrated"
 
 ## ---3. INITIAL DIMENSIONALITY REDUCTION & CLUSTERING-------------------------------------------------------
 
-# Run standard workflow for visualization & clustering
+# Dimensionality reduction & clustering
 allRats <- ScaleData(allRats)
 allRats <- RunPCA(allRats, npcs = 17)
-
-# Look at results
-# print(allRats[["pca"]], dims = 1:5, nfeatures = 5)
-# DimPlot(allRats, reduction = "pca")
-# DimHeatmap(allRats, dims = 1, cells = 500, balanced = TRUE)
-
-# Dimensionality reduction & clustering
 allRats <- RunUMAP(allRats, reduction = "pca", dims = 1:17)
 allRats <- FindNeighbors(allRats, reduction = "pca", dims = 1:17)
 allRats <- FindClusters(allRats, resolution = 0.3)
 
-# Look at results
-# ElbowPlot(allRats)
-
+# Visualize UMAP clustering
 DefaultAssay(allRats) <- "integrated"
 DimPlot(object = allRats, reduction = "umap", label = TRUE) + NoLegend()
 
