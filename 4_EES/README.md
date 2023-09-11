@@ -47,7 +47,7 @@ The blog linked above says to install Rosetta (which allows ARM Macs to run apps
 softwareupdate --install-rosetta
 ```
 
-This gave me some errors (Apple M2 Max running macOS 13.4 Ventura). Some websites say Rosetta *does not* come already installed with macOS, but when I tried opening a copy of Terminal (see below) using Rosetta, I had no issues. So you might just try starting at step 2 below and return to step 1 if Rosetta does not work for you.
+This gave me some errors (Apple M2 Max running macOS 13.4 Ventura). Some websites say Rosetta *does not* come already installed with macOS, but when I tried opening a copy of Terminal (see below) using Rosetta, I had no issues. So you might just try starting at step 4 below and return to this step if Rosetta does not work for you.
 
 **4. Create a Rosetta terminal**
 
