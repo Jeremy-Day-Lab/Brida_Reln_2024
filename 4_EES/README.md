@@ -53,7 +53,7 @@ This gave me some errors (Apple M2 Max running macOS 13.4 Ventura). Some website
 
 If your OS is older than Ventura, you can simply duplicate the Terminal app (right-click, duplicate).
 
-If you're on macOS Ventura and can't duplicate Terminal, download and install a third-party terminal app such as [iterm2](https://iterm2.com/), which you can then duplicate.
+If you're on macOS Ventura and can't duplicate Terminal, download and install a third-party terminal app such as [iTerm2](https://iterm2.com/), which you can then duplicate.
 
 Rename your duplicated terminal app to e.g. "iTerm Rosetta" to denote it as the copy that will open with Rosetta by default.
 
