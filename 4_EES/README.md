@@ -7,7 +7,9 @@
 **PHATE only works on Intel x86 Mac**
 
 ## Installing x86 Python
-These are the steps to set up a copy of your Terminal app to run with Rosetta and install x86 Python. The following is modified from [this Medium story](https://towardsdatascience.com/how-to-use-manage-multiple-python-versions-on-an-apple-silicon-m1-mac-d69ee6ed0250), rewritten here (a) in case this link is/becomes inaccessible and (b) to add my own notes.
+If your Mac has an Intel chip, you can disregard everything on this page and install the necessary packages in your regular Python as normal.
+
+If your Mac has an Apple Silicon chip (M1, M2), this is for you. These are the steps to set up a copy of your Terminal app to run with Rosetta and install x86 Python. The following is modified from [this Medium story](https://towardsdatascience.com/how-to-use-manage-multiple-python-versions-on-an-apple-silicon-m1-mac-d69ee6ed0250), rewritten here (a) in case this link is/becomes inaccessible and (b) to add my own notes.
 
 **1. Install Homebrew**
 
