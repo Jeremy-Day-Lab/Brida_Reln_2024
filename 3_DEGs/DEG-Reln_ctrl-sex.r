@@ -26,8 +26,19 @@ allRats <- readRDS("allRats_souped_noDoub.rds")
 # DESeq2 code below will error if cellType still includes NAs
 allRats$cellType <- Idents(allRats)
 
+# Group isn't relevant here but add it so that code downstream to create metadata works
+allRats$group <- allRats$GEM
+allRats$group[allRats$group == 2] <- 1
+allRats$group[allRats$group == 3] <- 1
+allRats$group[allRats$group == 4] <- 1
+allRats$group[allRats$group == 5] <- 2
+allRats$group[allRats$group == 6] <- 2
+allRats$group[allRats$group == 7] <- 2
+allRats$group[allRats$group == 8] <- 2
+allRats$group <- as.factor(allRats$group)
+
 # Create a sample ID column: dataset_sex_stim
-allRats$sample.id <- as.factor(allRats$sex_target)
+allRats$sample.id <- as.factor(paste(allRats$group, allRats$sex_target, sep = "_"))
 # Named vector of sample names
 sample_ids <- purrr::set_names(levels(allRats$sample.id))
 
@@ -133,8 +144,9 @@ metadata <- data.frame(cluster_id = sub("_.*","", de_samples),
                        sample_id  = de_samples,
                        sex.target = sub("^[^_]*_","", de_samples))
 #Create extra columns in the metadata
-metadata$sex       <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",1)))
-metadata$target    <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",2)))
+metadata$group     <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",1)))
+metadata$sex       <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",2)))
+metadata$target    <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",3)))
 
 
 #################
