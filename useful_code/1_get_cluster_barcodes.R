@@ -19,10 +19,10 @@ olig <- subset(allRats, idents = "Olig")
 poly <- subset(allRats, idents = "Polydend")
 
 # Syntax for total read count of all genes in subset
-sum(Matrix::colSums(D1, slot = "counts"))
+sum(Matrix::colSums(d1, slot = "counts"))
 
 # Syntax for read count for a given gene (e.g., Virus)
-sum(FetchData(D1, vars = "Virus", slot = "counts"))
+sum(FetchData(d1, vars = "Virus", slot = "counts"))
 
 
 ############################################################
