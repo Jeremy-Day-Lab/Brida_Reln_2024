@@ -31,16 +31,21 @@ mkdir cluster_bams
 declare -a cluster_array=("astro" "d1" "d2_1" "d2_2" "d3" "gaba" "grm8" "micro" "mural" "olig" "poly" "pvalb" "sst")
 echo ${cluster_array[@]}
 
+# Iterate over clusters
 for c in ${cluster_array[@]}
 do
+    # Iterate over GEM wells
     for x in 1 2 3 4 5 6 7 8
     do
         barcodefile="barcodes/${c}_${x}_barcodes.csv"
+        # If barcode file exists for this cluster_GEM
         if [ -f $barcodefile ]
         then
             echo "Running subset for ${c}_${x}"
             outfile="cluster_bams/subset_virus_${c}_${x}.bam"
+            # Change path to where you saved subset-bam_macos
             ~/subset-bam_macos --bam virus_bams.bam --cell-barcodes $barcodefile --out-bam $outfile
+        # Skips iteration if barcode file doesn't exist for that cluster_GEM
         else
             echo "Skipping ${c}_${x}"
         fi
