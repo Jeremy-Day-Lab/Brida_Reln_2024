@@ -38,7 +38,7 @@ allRats$group[allRats$group == 8] <- 2
 allRats$group <- as.factor(allRats$group)
 
 # Create a sample ID column: dataset_sex_stim
-allRats$sample.id <- as.factor(paste(allRats$group, allRats$sex_target, sep = "_"))
+allRats$sample.id <- as.factor(paste(allRats$GEM, allRats$sex_target, sep = "_"))
 # Named vector of sample names
 sample_ids <- purrr::set_names(levels(allRats$sample.id))
 
@@ -67,19 +67,19 @@ count_aggr <- Matrix.utils::aggregate.Matrix(t(allRats@assays$RNA@counts),
 # This is a cumbersome workaround, but it works.
 
 # Make lists for subsets:
-keep_rows_astro <- c("Astrocyte_1_female_lacz", "Astrocyte_1_female_reln", "Astrocyte_2_female_lacz", "Astrocyte_2_female_reln", "Astrocyte_1_male_lacz", "Astrocyte_1_male_reln", "Astrocyte_2_male_lacz", "Astrocyte_2_male_reln")
-keep_rows_Drd1 <- c("Drd1-MSN_1_female_lacz", "Drd1-MSN_1_female_reln", "Drd1-MSN_2_female_lacz", "Drd1-MSN_2_female_reln", "Drd1-MSN_1_male_lacz", "Drd1-MSN_1_male_reln", "Drd1-MSN_2_male_lacz", "Drd1-MSN_2_male_reln")
-keep_rows_Drd2.1 <- c("Drd2-MSN-1_1_female_lacz", "Drd2-MSN-1_1_female_reln", "Drd2-MSN-1_2_female_lacz", "Drd2-MSN-1_2_female_reln", "Drd2-MSN-1_1_male_lacz", "Drd2-MSN-1_1_male_reln", "Drd2-MSN-1_2_male_lacz", "Drd2-MSN-1_2_male_reln")
-keep_rows_Drd2.2 <- c("Drd2-MSN-2_1_female_lacz", "Drd2-MSN-2_1_female_reln", "Drd2-MSN-2_2_female_lacz", "Drd2-MSN-2_2_female_reln", "Drd2-MSN-2_1_male_lacz", "Drd2-MSN-2_1_male_reln", "Drd2-MSN-2_2_male_lacz", "Drd2-MSN-2_2_male_reln")
-keep_rows_Drd3 <- c("Drd3-MSN_1_female_lacz", "Drd3-MSN_1_female_reln", "Drd3-MSN_2_female_lacz", "Drd3-MSN_2_female_reln", "Drd3-MSN_1_male_lacz", "Drd3-MSN_1_male_reln", "Drd3-MSN_2_male_lacz", "Drd3-MSN_2_male_reln")
-keep_rows_grm8 <- c("Grm8-MSN_1_female_lacz", "Grm8-MSN_1_female_reln", "Grm8-MSN_2_female_lacz", "Grm8-MSN_2_female_reln", "Grm8-MSN_1_male_lacz", "Grm8-MSN_1_male_reln", "Grm8-MSN_2_male_lacz", "Grm8-MSN_2_male_reln")
-keep_rows_gaba <- c("GABA-Undef_1_female_lacz", "GABA-Undef_1_female_reln", "GABA-Undef_2_female_lacz", "GABA-Undef_2_female_reln", "GABA-Undef_1_male_lacz", "GABA-Undef_1_male_reln", "GABA-Undef_2_male_lacz", "GABA-Undef_2_male_reln")
-keep_rows_pvalb <- c("Pvalb-Int_1_female_lacz", "Pvalb-Int_1_female_reln", "Pvalb-Int_2_female_lacz", "Pvalb-Int_2_female_reln", "Pvalb-Int_1_male_lacz", "Pvalb-Int_1_male_reln", "Pvalb-Int_2_male_lacz", "Pvalb-Int_2_male_reln")
-keep_rows_sst <- c("Sst-Int_1_female_lacz", "Sst-Int_1_female_reln", "Sst-Int_2_female_lacz", "Sst-Int_2_female_reln", "Sst-Int_1_male_lacz", "Sst-Int_1_male_reln", "Sst-Int_2_male_lacz", "Sst-Int_2_male_reln")
-keep_rows_micro <- c("Microglia_1_female_lacz", "Microglia_1_female_reln", "Microglia_2_female_lacz", "Microglia_2_female_reln", "Microglia_1_male_lacz", "Microglia_1_male_reln", "Microglia_2_male_lacz", "Microglia_2_male_reln")
-keep_rows_mural <- c("Mural_1_female_lacz", "Mural_1_female_reln", "Mural_2_female_lacz", "Mural_2_female_reln", "Mural_1_male_lacz", "Mural_1_male_reln", "Mural_2_male_lacz", "Mural_2_male_reln")
-keep_rows_olig <- c("Olig_1_female_lacz", "Olig_1_female_reln", "Olig_2_female_lacz", "Olig_2_female_reln", "Olig_1_male_lacz", "Olig_1_male_reln", "Olig_2_male_lacz", "Olig_2_male_reln")
-keep_rows_poly <- c("Polydend_1_female_lacz", "Polydend_1_female_reln", "Polydend_2_female_lacz", "Polydend_2_female_reln", "Polydend_1_male_lacz", "Polydend_1_male_reln", "Polydend_2_male_lacz", "Polydend_2_male_reln")
+keep_rows_astro <- c("Astrocyte_1_male_lacz", "Astrocyte_2_male_reln", "Astrocyte_3_female_lacz", "Astrocyte_4_female_reln", "Astrocyte_5_female_lacz", "Astrocyte_6_female_reln", "Astrocyte_7_male_reln", "Astrocyte_8_male_lacz")
+keep_rows_Drd1 <- c("Drd1-MSN_1_male_lacz", "Drd1-MSN_2_male_reln", "Drd1-MSN_3_female_lacz", "Drd1-MSN_4_female_reln", "Drd1-MSN_5_female_lacz", "Drd1-MSN_6_female_reln", "Drd1-MSN_7_male_reln", "Drd1-MSN_8_male_lacz")
+keep_rows_Drd2.1 <- c("Drd2-MSN-1_1_male_lacz", "Drd2-MSN-1_2_male_reln", "Drd2-MSN-1_3_female_lacz", "Drd2-MSN-1_4_female_reln", "Drd2-MSN-1_5_female_lacz", "Drd2-MSN-1_6_female_reln", "Drd2-MSN-1_7_male_reln", "Drd2-MSN-1_8_male_lacz")
+keep_rows_Drd2.2 <- c("Drd2-MSN-2_1_male_lacz", "Drd2-MSN-2_2_male_reln", "Drd2-MSN-2_3_female_lacz", "Drd2-MSN-2_4_female_reln", "Drd2-MSN-2_5_female_lacz", "Drd2-MSN-2_6_female_reln", "Drd2-MSN-2_7_male_reln", "Drd2-MSN-2_8_male_lacz")
+keep_rows_Drd3 <- c("Drd3-MSN_1_male_lacz", "Drd3-MSN_2_male_reln", "Drd3-MSN_3_female_lacz", "Drd3-MSN_4_female_reln", "Drd3-MSN_5_female_lacz", "Drd3-MSN_6_female_reln", "Drd3-MSN_7_male_reln", "Drd3-MSN_8_male_lacz")
+keep_rows_grm8 <- c("Grm8-MSN_1_male_lacz", "Grm8-MSN_2_male_reln", "Grm8-MSN_3_female_lacz", "Grm8-MSN_4_female_reln", "Grm8-MSN_5_female_lacz", "Grm8-MSN_6_female_reln", "Grm8-MSN_7_male_reln", "Grm8-MSN_8_male_lacz")
+keep_rows_gaba <- c("GABA-Undef_1_male_lacz", "GABA-Undef_2_male_reln", "GABA-Undef_3_female_lacz", "GABA-Undef_4_female_reln", "GABA-Undef_5_female_lacz", "GABA-Undef_6_female_reln", "GABA-Undef_7_male_reln", "GABA-Undef_8_male_lacz")
+keep_rows_pvalb <- c("Pvalb-Int_1_male_lacz", "Pvalb-Int_2_male_reln", "Pvalb-Int_3_female_lacz", "Pvalb-Int_4_female_reln", "Pvalb-Int_5_female_lacz", "Pvalb-Int_6_female_reln", "Pvalb-Int_7_male_reln", "Pvalb-Int_8_male_lacz")
+keep_rows_sst <- c("Sst-Int_1_male_lacz", "Sst-Int_2_male_reln", "Sst-Int_3_female_lacz", "Sst-Int_4_female_reln", "Sst-Int_5_female_lacz", "Sst-Int_6_female_reln", "Sst-Int_7_male_reln", "Sst-Int_8_male_lacz")
+keep_rows_micro <- c("Microglia_1_male_lacz", "Microglia_2_male_reln", "Microglia_3_female_lacz", "Microglia_4_female_reln", "Microglia_5_female_lacz", "Microglia_6_female_reln", "Microglia_7_male_reln", "Microglia_8_male_lacz")
+keep_rows_mural <- c("Mural_1_male_lacz", "Mural_2_male_reln", "Mural_3_female_lacz", "Mural_4_female_reln", "Mural_5_female_lacz", "Mural_6_female_reln", "Mural_7_male_reln", "Mural_8_male_lacz")
+keep_rows_olig <- c("Olig_1_male_lacz", "Olig_2_male_reln", "Olig_3_female_lacz", "Olig_4_female_reln", "Olig_5_female_lacz", "Olig_6_female_reln", "Olig_7_male_reln", "Olig_8_male_lacz")
+keep_rows_poly <- c("Polydend_1_male_lacz", "Polydend_2_male_reln", "Polydend_3_female_lacz", "Polydend_4_female_reln", "Polydend_5_female_lacz", "Polydend_6_female_reln", "Polydend_7_male_reln", "Polydend_8_male_lacz")
 
 # Create subsets
 subset_astro <- t(count_aggr[rownames(count_aggr) %in% keep_rows_astro, ])
@@ -102,18 +102,17 @@ raw_counts_list <- list(subset_astro, subset_Drd1, subset_Drd2.1, subset_Drd2.2,
 names(raw_counts_list) <- c("Astrocyte", "Drd1.MSN", "Drd2.MSN.1", "Drd2.MSN.2", "Drd3.MSN", "Grm8.MSN", "GABA.Undef", "Pvalb.Int", "Sst.Int", "Microglia", "Mural", "Olig", "Polydend")
 
 # Replace - with . in cluster names only
-colnames(raw_counts_list[[2]]) <- c("Drd1.MSN_1_female_lacz","Drd1.MSN_1_female_reln","Drd1.MSN_1_male_lacz","Drd1.MSN_1_male_reln","Drd1.MSN_2_female_lacz","Drd1.MSN_2_female_reln","Drd1.MSN_2_male_lacz","Drd1.MSN_2_male_reln")
-colnames(raw_counts_list[[3]]) <- c("Drd2.MSN.1_1_female_lacz","Drd2.MSN.1_1_female_reln","Drd2.MSN.1_1_male_lacz","Drd2.MSN.1_1_male_reln","Drd2.MSN.1_2_female_lacz","Drd2.MSN.1_2_female_reln","Drd2.MSN.1_2_male_lacz","Drd2.MSN.1_2_male_reln")
-colnames(raw_counts_list[[4]]) <- c("Drd2.MSN.2_1_female_lacz","Drd2.MSN.2_1_female_reln","Drd2.MSN.2_1_male_lacz","Drd2.MSN.2_1_male_reln","Drd2.MSN.2_2_female_lacz","Drd2.MSN.2_2_female_reln","Drd2.MSN.2_2_male_lacz","Drd2.MSN.2_2_male_reln")
-colnames(raw_counts_list[[5]]) <- c("Drd3.MSN_1_male_lacz","Drd3.MSN_1_male_reln","Drd3.MSN_2_female_lacz","Drd3.MSN_2_female_reln","Drd3.MSN_2_male_lacz","Drd3.MSN_2_male_reln")
-colnames(raw_counts_list[[6]]) <- c("Grm8.MSN_1_female_lacz","Grm8.MSN_1_female_reln","Grm8.MSN_1_male_lacz","Grm8.MSN_1_male_reln","Grm8.MSN_2_female_lacz","Grm8.MSN_2_female_reln","Grm8.MSN_2_male_lacz","Grm8.MSN_2_male_reln")
-colnames(raw_counts_list[[7]]) <- c("GABA.Undef_1_female_lacz","GABA.Undef_1_female_reln","GABA.Undef_1_male_lacz","GABA.Undef_1_male_reln","GABA.Undef_2_female_lacz","GABA.Undef_2_female_reln","GABA.Undef_2_male_lacz","GABA.Undef_2_male_reln")
-colnames(raw_counts_list[[8]]) <- c("Pvalb.Int_1_female_lacz","Pvalb.Int_1_female_reln","Pvalb.Int_1_male_lacz","Pvalb.Int_1_male_reln","Pvalb.Int_2_female_reln","Pvalb.Int_2_male_lacz","Pvalb.Int_2_male_reln")
-colnames(raw_counts_list[[9]]) <- c("Sst.Int_1_female_lacz","Sst.Int_1_female_reln","Sst.Int_1_male_lacz","Sst.Int_1_male_reln","Sst.Int_2_female_lacz","Sst.Int_2_female_reln","Sst.Int_2_male_lacz","Sst.Int_2_male_reln")
+colnames(raw_counts_list[[2]]) <- c("Drd1.MSN_1_male_lacz","Drd1.MSN_2_male_reln","Drd1.MSN_3_female_lacz","Drd1.MSN_4_female_reln","Drd1.MSN_5_female_lacz","Drd1.MSN_6_female_reln","Drd1.MSN_7_male_reln","Drd1.MSN_8_male_lacz")
+colnames(raw_counts_list[[3]]) <- c("Drd2.MSN.1_1_male_lacz","Drd2.MSN.1_2_male_reln","Drd2.MSN.1_3_female_lacz","Drd2.MSN.1_4_female_reln","Drd2.MSN.1_5_female_lacz","Drd2.MSN.1_6_female_reln","Drd2.MSN.1_7_male_reln","Drd2.MSN.1_8_male_lacz")
+colnames(raw_counts_list[[4]]) <- c("Drd2.MSN.2_1_male_lacz","Drd2.MSN.2_2_male_reln","Drd2.MSN.2_3_female_lacz","Drd2.MSN.2_4_female_reln","Drd2.MSN.2_5_female_lacz","Drd2.MSN.2_6_female_reln","Drd2.MSN.2_7_male_reln","Drd2.MSN.2_8_male_lacz")
+colnames(raw_counts_list[[5]]) <- c("Drd3.MSN_1_male_lacz","Drd3.MSN_2_male_reln","Drd3.MSN_5_female_lacz","Drd3.MSN_6_female_reln","Drd3.MSN_7_male_reln","Drd3.MSN_8_male_lacz")
+colnames(raw_counts_list[[6]]) <- c("Grm8.MSN_1_male_lacz","Grm8.MSN_2_male_reln","Grm8.MSN_3_female_lacz","Grm8.MSN_4_female_reln","Grm8.MSN_5_female_lacz","Grm8.MSN_6_female_reln","Grm8.MSN_7_male_reln","Grm8.MSN_8_male_lacz")
+colnames(raw_counts_list[[7]]) <- c("GABA.Undef_1_male_lacz","GABA.Undef_2_male_reln","GABA.Undef_3_female_lacz","GABA.Undef_4_female_reln","GABA.Undef_5_female_lacz","GABA.Undef_6_female_reln","GABA.Undef_7_male_reln","GABA.Undef_8_male_lacz")
+colnames(raw_counts_list[[8]]) <- c("Pvalb.Int_1_male_lacz","Pvalb.Int_2_male_reln","Pvalb.Int_3_female_lacz","Pvalb.Int_4_female_reln","Pvalb.Int_6_female_reln","Pvalb.Int_7_male_reln","Pvalb.Int_8_male_lacz")
+colnames(raw_counts_list[[9]]) <- c("Sst.Int_1_male_lacz","Sst.Int_2_male_reln","Sst.Int_3_female_lacz","Sst.Int_4_female_reln","Sst.Int_5_female_lacz","Sst.Int_6_female_reln","Sst.Int_7_male_reln","Sst.Int_8_male_lacz")
 
 rm(list=ls(pattern="subset_"))
 rm(list=ls(pattern="keep_rows_"))
-
 
 #### This is the code that doesn't work with this data...
 # Turn into a list, and split list into components for each cluster
@@ -126,7 +125,6 @@ rm(list=ls(pattern="keep_rows_"))
 #   lapply(function(x) {
 #     magrittr::set_colnames(t(x), gsub("-", ".", rownames(x)))
 #   })
-
 
 ######### START AGAIN HERE ###########
 
@@ -144,10 +142,9 @@ metadata <- data.frame(cluster_id = sub("_.*","", de_samples),
                        sample_id  = de_samples,
                        sex.target = sub("^[^_]*_","", de_samples))
 #Create extra columns in the metadata
-metadata$group     <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",1)))
+metadata$GEM     <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",1)))
 metadata$sex       <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",2)))
 metadata$target    <- as.factor(as.character(lapply(strsplit(metadata$sex.target,"_"),"[",3)))
-
 
 #################
 # NEW FUNCTIONS #
@@ -211,7 +208,6 @@ nested_lapply <- function(data, FUN) {
   lapply(data, function(sublist) { lapply(sublist, FUN) })
 }
 
-
 #####################################
 # Create a DESEqDataSet from object #
 #####################################
@@ -242,12 +238,10 @@ dds_all_cells <- mapply(FUN = function(x, y, z) {
   return(dds)
   
 }, x = raw_counts_list, y = 1:length(raw_counts_list), z = names(raw_counts_list))
-# }, x = raw_counts_list, y = 1:length(raw_counts_list), z = gsub("-", ".", names(raw_counts_list)))
 
-
-################################
-# Remove genes with < 5 counts #
-################################
+####################################
+# Remove genes with mean counts <5 #
+####################################
 
 dds_all_cells <- mapply(FUN = function(x, z) {
   
@@ -264,7 +258,6 @@ dds_all_cells <- mapply(FUN = function(x, z) {
 mapply(FUN = function(x){
   message(paste0(nrow(counts(x))))
 }, x = dds_all_cells)
-
 
 ###################
 # QUALITY CONTROL #
@@ -332,7 +325,6 @@ mapply(FUN = function(x, z) {
   
 }, x = dds_all_cells, z = gsub("-", ".", names(dds_all_cells)))
 
-
 ####################
 ## CALCULATE DEGs ##
 ####################
@@ -354,13 +346,11 @@ dds_all_cells <- mapply(FUN = function(x, z) {
   return(x)
 }, x = dds_all_cells, z = gsub("-", ".", names(dds_all_cells)))
 
-
 # Calculate results
 res_all_cells <- mapply(FUN = function(x) {
   res <- results(x) # ref level established earlier by relevel
   return(res)
 }, x = dds_all_cells)
-
 
 # Calculate percent cells expressing gene
 Idents(allRats) <- gsub(Idents(allRats), pattern = "-", replacement = ".")
@@ -404,7 +394,6 @@ mapply(FUN = function(x, z) {
   normalized_counts <- as.data.frame(counts(x, normalized = TRUE))
   write.csv(normalized_counts, file = file_name_norm, row.names = TRUE, quote = FALSE)
 }, x = dds_all_cells, z = gsub("-", ".", names(dds_all_cells)))
-
 
 # Make table of number of DEGs
 # NOTE: Change nrow to your correct number of names in dds_all_cells (i.e., # of clusters)

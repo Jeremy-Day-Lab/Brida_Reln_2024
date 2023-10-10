@@ -6,7 +6,7 @@
 ####################################
 
 # Finds genes that are differentially expressed between cell types
-# regardless of sample (GEM well), target (lacZ vs. Reln), or sex. (IS THIS CORRECT???)
+# Set to control for sex
 
 library(Seurat)
 library(ggplot2)
@@ -21,8 +21,6 @@ library(pheatmap)
 
 # Load combo object
 allRats <- readRDS("allRats_souped_noDoub.rds")
-allRats <- RenameIdents(allRats, "Mural?" = "Mural")
-
 
 # Make sure cellType is correct after integrating & DoubletFinder
 # DESeq2 code below will error if cellType still includes NAs
@@ -58,11 +56,11 @@ count_aggr <- Matrix.utils::aggregate.Matrix(t(allRats@assays$RNA@counts),
 
 # Transpose count_aggr
 # row names = genes; col names = cluster_sampleID
-count_aggr_t2 <- t(count_aggr2)
+count_aggr_t <- t(count_aggr)
 
 # Optional change, replacing - with .
 # Colnames will now be this format: Drd1.MSN.1_3_fem_lacz
-colnames(count_aggr_t2) <- gsub(x = colnames(count_aggr_t2), pattern = "-", replacement = ".")
+colnames(count_aggr_t) <- gsub(x = colnames(count_aggr_t), pattern = "-", replacement = ".")
 
 # Create metadata dataframe
 metadata <- data.frame(cluster_id     = sub("_.*","", colnames(count_aggr_t)), #takes first part of colname, before _ (e.g., Drd1.MSN.1)
@@ -93,7 +91,7 @@ for(i in unique(metadata$cluster_id)){
   # Can't include both GEM & target in design because they are "identical"
   dds <- DESeqDataSetFromMatrix(count_aggr_t, 
                                 colData = metadata, 
-                                design = ~ GEM + cellType)
+                                design = ~ sex + cellType)
   # Set reference level = control group
   dds$cellType <- relevel(dds$cellType, ref = "Other")
   # Filter
@@ -131,7 +129,7 @@ for(i in unique(metadata$cluster_id)){
   print(paste("PCA plots made for", i))
 
   ############ Get results ############
-  dds <- DESeq(dds, test = "LRT", reduced = ~ GEM)
+  dds <- DESeq(dds, test = "LRT", reduced = ~ sex)
   res <- as.data.frame(results(dds))
   res$geneName <- rownames(res)
   # All cells of this type
