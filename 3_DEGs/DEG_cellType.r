@@ -10,12 +10,9 @@
 
 library(Seurat)
 library(ggplot2)
-library(Libra)
-library(dplyr)
-library(stringr)
-library(ComplexUpset)
-library(Matrix.utils)
 library(DESeq2)
+library(dplyr)
+library(Matrix.utils)
 library(RColorBrewer)
 library(pheatmap)
 

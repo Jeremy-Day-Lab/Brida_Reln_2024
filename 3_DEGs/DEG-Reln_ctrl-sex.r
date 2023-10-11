@@ -6,16 +6,13 @@
 ##                                ##
 ####################################
 
-# This workflow is based off of work from Lara Ianov
+# This workflow is based off of work by Lara Ianov
 
 library(Seurat)
 library(ggplot2)
-library(Libra)
-library(dplyr)
-library(stringr)
-library(ComplexUpset)
 library(Matrix.utils)
 library(DESeq2)
+library(dplyr)
 library(RColorBrewer)
 library(pheatmap)
 
@@ -91,6 +88,7 @@ raw_counts_list <- list(subset_astro, subset_Drd1, subset_Drd2.1, subset_Drd2.2,
 names(raw_counts_list) <- c("Astrocyte", "Drd1.MSN", "Drd2.MSN.1", "Drd2.MSN.2", "Drd3.MSN", "Grm8.MSN", "GABA.Undef", "Pvalb.Int", "Sst.Int", "Microglia", "Mural", "Olig", "Polydend")
 
 # Replace - with . in cluster names only
+# Omit any missing datasets! (here, 3 & 4 for Drd3-MSN; 5 for Pvalb-Int)
 colnames(raw_counts_list[[2]]) <- c("Drd1.MSN_1_male_lacz","Drd1.MSN_2_male_reln","Drd1.MSN_3_female_lacz","Drd1.MSN_4_female_reln","Drd1.MSN_5_female_lacz","Drd1.MSN_6_female_reln","Drd1.MSN_7_male_reln","Drd1.MSN_8_male_lacz")
 colnames(raw_counts_list[[3]]) <- c("Drd2.MSN.1_1_male_lacz","Drd2.MSN.1_2_male_reln","Drd2.MSN.1_3_female_lacz","Drd2.MSN.1_4_female_reln","Drd2.MSN.1_5_female_lacz","Drd2.MSN.1_6_female_reln","Drd2.MSN.1_7_male_reln","Drd2.MSN.1_8_male_lacz")
 colnames(raw_counts_list[[4]]) <- c("Drd2.MSN.2_1_male_lacz","Drd2.MSN.2_2_male_reln","Drd2.MSN.2_3_female_lacz","Drd2.MSN.2_4_female_reln","Drd2.MSN.2_5_female_lacz","Drd2.MSN.2_6_female_reln","Drd2.MSN.2_7_male_reln","Drd2.MSN.2_8_male_lacz")
@@ -386,14 +384,14 @@ mapply(FUN = function(x, z) {
 
 # Make table of number of DEGs
 # NOTE: Change nrow to your correct number of names in dds_all_cells (i.e., # of clusters)
-DEGs_DF <- as.data.frame(matrix(ncol = 2, nrow=13))
+DEGs_DF <- as.data.frame(matrix(ncol = 2, nrow = 13))
 colnames(DEGs_DF) <- c("cellType", "number_of_DEGs")
 rownames(DEGs_DF) <- names(dds_all_cells)
 DEGs_DF$cellType  <- names(dds_all_cells)
 
 for(i in names(dds_all_cells)){
   x <- as.data.frame(res_all_cells[[i]])
-  DEGs_DF[i,"number_of_DEGs"] <- nrow(subset(x, subset=(padj <= 0.05)))
+  DEGs_DF[i,"number_of_DEGs"] <- nrow(subset(x, subset = (padj <= 0.05)))
 }
 
 write.table(x         = DEGs_DF,
