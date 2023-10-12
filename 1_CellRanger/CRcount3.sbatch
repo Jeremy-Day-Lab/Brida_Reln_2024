@@ -10,7 +10,6 @@
 #SBATCH --mail-user=cenewman@uab.edu
 #SBATCH --mail-type=FAIL,END
 
-export HOME_DIR=/home/cenewman/programs/
 export DATA_DIR=/data/project/daylab/2023-JD-0062/
 export WORK_DIR=/scratch/cenewman/CRcount3
 cd $WORK_DIR

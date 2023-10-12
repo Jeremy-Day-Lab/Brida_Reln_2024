@@ -2,19 +2,51 @@
 
 This tutorial covers quality control and processing of counts output from CellRanger to prepare an integrated Seurat object for differential gene expression (DEG) analysis.
 
+## R and RStudio
+R is a computer coding language. In order to run RStudio (graphical user interface), you have to first install R on your system.
+* Go to the [R Project download website](https://cloud.r-project.org/)
+* Follow the easy instructions on [this handy website](https://rstudio-education.github.io/hopr/starting.html) (Section A1) to download & install R.
+
+**Download & install RStudio:** Now that you've installed the R programming language, you're ready to download & install RStudio, an interface that makes using R *much* easier for most of us.
+* Go to the [RStudio download website](https://rstudio.com/products/rstudio/download/#download)
+* Follow the easy instructions on [the same website as before](https://rstudio-education.github.io/hopr/starting.html) (Section A3) to download & install RStudio.
+
+Definitely download an installer (exe or dmg), not a zip/tarball. There should be a large blue button at the top of the page with the recommended version. Just click that to download.
+
+**Need to learn basic R?** [Here is a great starting point!](https://rstudio-education.github.io/hopr/project-1-weighted-dice.html)
+
+## Setup
+
 First, let's load all the packages we will be using.
 
 ```
 library(Seurat)
 library(SoupX)
-library(scCustomize)
 library(patchwork)
 library(dplyr)
 library(ggplot2)
-library(cowplot)
 library(DoubletFinder)
+```
+
+If any of the libraries are not already installed, see details below to install them.
+
+<details><summary>Details: install packages</summary>
 
 ```
+# For CRAN packages
+install.packages("Seurat")
+install.packages("SoupX")
+install.packages("patchwork")
+install.packages("dplyr")
+install.packages("ggplot2")
+
+# For GitHub packages
+install.packages("remotes")
+remotes::install_github('chris-mcginnis-ucsf/DoubletFinder')
+```
+
+</details>
+
 
 ## Study design
 We have 8 datasets, each composed of cells (nuclei) from a single rat:

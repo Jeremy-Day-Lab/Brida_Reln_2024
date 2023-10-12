@@ -8,7 +8,6 @@
 library(Seurat)
 library(patchwork)
 library(dplyr)
-library(cowplot)
 library(ggplot2)
 library(DoubletFinder)
 
@@ -85,11 +84,12 @@ ML1.nExp_poi_adj <- round(ML1.nExp_poi*(1-ML1.homotypic_props))
 male1.lacz <- doubletFinder_v3(male1.lacz, PCs = 1:17, pN = 0.25, pK = ML1_pk, nExp = ML1.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(male1.lacz@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(ML1, ML1.metadata, male1.lacz.sweep, male1.lacz.sweepStats)
+rm(list = ls(pattern = "ML1"))
+rm(male1.lacz.sweep, male1.lacz.sweepStats)
 
 ## ------------------------------------------------MALE 1 RELN-------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -141,11 +141,12 @@ MR1.nExp_poi_adj <- round(MR1.nExp_poi*(1-MR1.homotypic_props))
 male1.reln <- doubletFinder_v3(male1.reln, PCs = 1:17, pN = 0.25, pK = MR1_pk, nExp = MR1.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(male1.reln@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(MR1, MR1.metadata, male1.reln.sweep, male1.reln.sweepStats)
+rm(list = ls(pattern = "MR1"))
+rm(male1.reln.sweep, male1.reln.sweepStats)
 
 ## ---------------------------------------------FEMALE 1 LACZ------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -215,12 +216,13 @@ FL1.nExp_poi_adj <- round(FL1.nExp_poi*(1-FL1.homotypic_props))
 fem1.lacz <- doubletFinder_v3(fem1.lacz, PCs = 1:17, pN = 0.25, pK = FL1_pk, nExp = FL1.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(fem1.lacz@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove all objs except original subsets
 # (SAVE SWEEP OUTPUTS TO FILE FIRST??)
-rm(FL1, FL1.metadata, fem1.lacz.sweep, fem1.lacz.sweepStats)
+rm(list = ls(pattern = "FL1"))
+rm(fem1.lacz.sweep, fem1.lacz.sweepStats)
 
 ## -----------------------------------------------FEMALE 1 RELN------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -272,11 +274,12 @@ FR1.nExp_poi_adj <- round(FR1.nExp_poi*(1-FR1.homotypic_props))
 fem1.reln <- doubletFinder_v3(fem1.reln, PCs = 1:17, pN = 0.25, pK = FR1_pk, nExp = FR1.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(fem1.reln@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(FR1, FR1.metadata, fem1.reln.sweep, fem1.reln.sweepStats)
+rm(list = ls(pattern = "FR1"))
+rm(fem1.reln.sweep, fem1.reln.sweepStats)
 
 ## ---------------------------------------------FEMALE 2 LACZ------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -328,11 +331,12 @@ FL2.nExp_poi_adj <- round(FL2.nExp_poi*(1-FL2.homotypic_props))
 fem2.lacz <- doubletFinder_v3(fem2.lacz, PCs = 1:17, pN = 0.25, pK = FL2_pk, nExp = FL2.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(fem2.lacz@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(FL2, FL2.metadata, fem2.lacz.sweep, fem2.lacz.sweepStats)
+rm(list = ls(pattern = "FL2"))
+rm(fem2.lacz.sweep, fem2.lacz.sweepStats)
 
 ## -----------------------------------------------FEMALE 2 RELN------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -384,11 +388,12 @@ FR2.nExp_poi_adj <- round(FR2.nExp_poi*(1-FR2.homotypic_props))
 fem2.reln <- doubletFinder_v3(fem2.reln, PCs = 1:17, pN = 0.25, pK = FR2_pk, nExp = FR2.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(fem2.reln@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(FR2, FR2.metadata, fem2.reln.sweep, fem2.reln.sweepStats)
+rm(list = ls(pattern = "FR2"))
+rm(fem2.reln.sweep, fem2.reln.sweepStats)
 
 ## ------------------------------------------------MALE 2 RELN-------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -440,11 +445,12 @@ MR2.nExp_poi_adj <- round(MR2.nExp_poi*(1-MR2.homotypic_props))
 male2.reln <- doubletFinder_v3(male2.reln, PCs = 1:17, pN = 0.25, pK = MR2_pk, nExp = MR2.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(male2.reln@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
-rm(MR2, MR2.metadata, male2.reln.sweep, male2.reln.sweepStats)
+rm(list = ls(pattern = "MR2"))
+rm(male2.reln.sweep, male2.reln.sweepStats)
 
 ## ------------------------------------------------MALE 2 LACZ-------------------------------------------------
 ## ---2. Pull metadata & merge-------------------------------------------------------------------------------
@@ -496,7 +502,7 @@ ML2.nExp_poi_adj <- round(ML2.nExp_poi*(1-ML2.homotypic_props))
 male2.lacz <- doubletFinder_v3(male2.lacz, PCs = 1:17, pN = 0.25, pK = ML2_pk, nExp = ML2.nExp_poi_adj, reuse.pANN = FALSE, sct = FALSE)
 
 # Change names of dataframe so everything can be merged later
-# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (9,10) IF MORE METADATA ADDED PREVIOUSLY
+# MAKE SURE TO RENAME THE CORRECT COLUMNS - CHECK THE NUMBERS (11,12)
 names(male2.lacz@meta.data)[c(11,12)] <- c("pANN","DF.Classification")
 
 # Remove objs
@@ -506,20 +512,28 @@ rm(ML2, ML2.metadata, male2.lacz.sweep, male2.lacz.sweepStats)
 ## CALCULATE PROPORTION OF DOUBLETS PER CELL TYPE ##
 ####################################################
 
-# Rbind all metadata
-combo.meta <- rbind(male1.lacz@meta.data, male1.reln@meta.data, fem1.lacz@meta.data, fem1.reln@meta.data, fem2.lacz@meta.data, fem2.reln@meta.data, male2.reln@meta.data, male2.lacz@meta.data)
+# Merge all the individual object metadata
+combo.meta <- rbind(male1.lacz@meta.data, 
+                    male1.reln@meta.data, 
+                    fem1.lacz@meta.data, 
+                    fem1.reln@meta.data, 
+                    fem2.lacz@meta.data, 
+                    fem2.reln@meta.data, 
+                    male2.reln@meta.data, 
+                    male2.lacz@meta.data)
 
-# Check everything matches
+# Check that everything matches
 all(combo.meta$nonUniqueCellName == allRats$nonUniqueCellName)
 all(nrow(combo.meta) == nrow(allRats@meta.data))
 
 # Add doublet classification to metadata
 allRats <- AddMetaData(allRats, metadata = combo.meta$DF.Classification, col.name = "doubletClassification")
 
+# Plot doublets vs. singlets in UMAP space
 Idents(allRats) <- allRats$doubletClassification
 DimPlot(object = allRats, reduction = "umap")
 
-# Rename levels to cell type
+# Reset Idents to cell type
 Idents(allRats) <- allRats$cellType
 
 #Create new dataframe
@@ -540,9 +554,12 @@ proportion <- na.omit(proportion)
 # Create new dataframe with only doublet proportions
 doubletProportions <- data.frame(cellType = proportion$cellType, propDoublets = proportion$propDoublets)
 
-# Create simple bar graph to visualize
-bargraph <- ggplot(doubletProportions, aes(x = cellType, y = propDoublets)) + geom_bar(stat="identity", color = 'blue', fill = 'blue') + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), plot.title = element_text(hjust = 0.5)) + labs(title="Proportion of doublets in each cell cluster")
-bargraph
+# Create bar graph to visualize
+bargraph <- ggplot(doubletProportions, aes(x = cellType, y = propDoublets)) + 
+                        geom_bar(stat="identity", color = 'blue', fill = 'blue') + 
+                        theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1), 
+                              plot.title = element_text(hjust = 0.5)) + 
+                        labs(title="Proportion of doublets in each cell cluster")
 
 #############################################################
 ## REMOVING DOUBLETS & RECLUSTERING & FINDING MARKER GENES ##
@@ -551,67 +568,63 @@ bargraph
 # Subset to remove doublets
 allRats.noDoublets <- subset(allRats, subset = (doubletClassification == 'Singlet'))
 
-# DefaultAssay must be set to "integrated" for PCA
+# Reset default assay
 DefaultAssay(allRats.noDoublets) <- "integrated"
 
-# Standard workflow for viz & clustering
+# Data scaling, dimensionality reduction, clustering
 allRats.noDoublets <- ScaleData(allRats.noDoublets)
 allRats.noDoublets <- RunPCA(allRats.noDoublets, npcs = 17)
 allRats.noDoublets <- RunUMAP(allRats.noDoublets, reduction = "pca", dims = 1:17)
 allRats.noDoublets <- FindNeighbors(allRats.noDoublets, reduction = "pca", dims = 1:17)
-allRats.noDoublets <- FindClusters(allRats.noDoublets, resolution = 0.2) #play with resolution
-# allRats.noDoublets <- FindClusters(allRats.noDoublets, resolution = 0.1) #smaller resolution = fewer clusters
+allRats.noDoublets <- FindClusters(allRats.noDoublets, resolution = 0.15)
 
+# Plot
 DimPlot(allRats.noDoublets, reduction = "umap", label = TRUE) + NoLegend()
 
-# Find markers
-markers.allRats.noDoublets <- FindAllMarkers(allRats.noDoublets, only.pos = TRUE, min.pct = 0.25)
-
-# Save top 10 markers for each cluster
-top10r <- markers.allRats.noDoublets %>% 
-  group_by(cluster) %>%
-  top_n(n = 10, wt = avg_log2FC)
-
 # Make stacked violin plot to confirm cluster identities by marker genes
-DefaultAssay(allRats.noDoublets) <- "RNA"
 features <- c("Drd1", "Ebf1", "Drd2", "Penk", "Drd3", "Grm8", "Elavl2", "Chat", "Kit", "Sst", "Slc17a7", "Aqp4", "Gja1", "Arhgap15", "Rgs5", "Mbp", "Opalin", "Pdgfra", "Ppp1r1b", "Foxp2", "Bcl11b", "Gad1", "Syt1")
-stackedVln <- VlnPlot(allRats.noDoublets, features, stack = TRUE, sort = FALSE, flip = TRUE, fill.by = "ident") + theme(legend.position = "none")
-stackedVln
+DefaultAssay(allRats.noDoublets) <- "RNA"
+stackedVln <- VlnPlot(allRats.noDoublets, features, stack = TRUE, sort = FALSE, flip = TRUE, fill.by = "ident") + 
+                theme(legend.position = "none")
 
 ##################################
 # HORIZONTAL STACKED VIOLIN PLOT #
 ##################################
 
-# Create dataframe from Seurat object
+library(cowplot)
+library(sctree) #For creating dataframe from Seurat obj
+
 DefaultAssay(allRats.noDoublets) <- "RNA"
+# Vector of genes
+features <- c("Drd1", "Ebf1", "Drd2", "Penk", "Drd3", "Grm8", "Elavl2", "Chat", 
+              "Kit", "Sst", "Slc17a7", "Aqp4", "Gja1", "Arhgap15", "Rgs5", "Mbp", 
+              "Opalin", "Pdgfra", "Ppp1r1b", "Foxp2", "Bcl11b", "Gad1", "Syt1")
+# Create dataframe from Seurat object
 allRats.noDoublets.DF <- as.data.frame(allRats.noDoublets, genes = features, fix_names = FALSE)
-allRats.DF <- as.data.frame(allRats, genes = features, fix_names = FALSE)
 
 # Add cell ID and identity classes
 allRats.noDoublets.DF$Cell <- rownames(allRats.noDoublets.DF)
-allRats.noDoublets.DF$Idents <- identity
+allRats.noDoublets.DF$Idents <- Idents(allRats.noDoublets)
 
 # Use melt to change data.frame format
-allRats.noDoublets.DF <- reshape2::melt(allRats.noDoublets.DF, id.vars = c("Cell","Idents"), measure.vars = features,
-                       variable.name = "Feat", value.name = "Expr")
+allRats.noDoublets.DF <- reshape2::melt(allRats.noDoublets.DF, id.vars = c("Cell","Idents"), measure.vars = features, 
+                                        variable.name = "Feat", value.name = "Expr")
 head(allRats.noDoublets.DF, 10)
 
 horizVln <- ggplot(allRats.noDoublets.DF, aes(factor(Feat), Expr, fill = Idents)) +
-  geom_violin(scale = "width", adjust = 1, trim = TRUE) +
-  scale_y_continuous(expand = c(0, 0), position="right", labels = function(x)
-    c(rep(x = "", times = length(x)-2), x[length(x) - 1], "")) +
-  facet_grid(rows = vars(Idents), scales = "free", switch = "y") +
-  theme_cowplot(font_size = 14) +
-  theme(legend.position = "none", panel.spacing = unit(0, "lines"),
-        plot.title = element_text(hjust = 0.5),
-        panel.background = element_rect(fill = NA, color = "black"),
-        strip.background = element_blank(),
-        strip.text = element_text(face = "bold"),
-        strip.text.y.left = element_text(size = 14, angle = 0),
-        axis.text.x = element_text(size = 14, angle = 60, hjust = 1)) +
-  xlab("Gene") + ylab("Expression Level")
-horizVln
-
+               geom_violin(scale = "width", adjust = 1, trim = TRUE) +
+               scale_y_continuous(expand = c(0, 0), position="right", labels = function(x)
+                                  c(rep(x = "", times = length(x)-2), x[length(x) - 1], "")) +
+               facet_grid(rows = vars(Idents), scales = "free", switch = "y") +
+               theme_cowplot(font_size = 14) +
+               theme(legend.position = "none", panel.spacing = unit(0, "lines"),
+                     plot.title = element_text(hjust = 0.5),
+                     panel.background = element_rect(fill = NA, color = "black"),
+                     strip.background = element_blank(),
+                     strip.text = element_text(face = "bold"),
+                     strip.text.y.left = element_text(size = 14, angle = 0),
+                     axis.text.x = element_text(size = 14, angle = 60, hjust = 1)) +
+               xlab("Gene") + ylab("Expression Level")
 
 # Rename clusters - change names below as needed, based on marker genes
 allRats.noDoublets <- RenameIdents(object = allRats.noDoublets,
@@ -636,7 +649,6 @@ DimPlot(object = allRats.noDoublets, reduction = "umap") + NoLegend()
 
 # Save labeled object + UMAP
 saveRDS(allRats.noDoublets, "allRats_souped_noDoub.rds")
-
 
 ##########################################
 # RANDOM HELPFUL CODE FOR EXPORTING DATA #

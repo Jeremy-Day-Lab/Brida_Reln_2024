@@ -5,7 +5,6 @@
 # Load libraries
 library(Seurat)
 library(SoupX)
-library(scCustomize)
 library(patchwork)
 library(dplyr)
 library(ggplot2)
@@ -137,22 +136,6 @@ fem2.reln$GEM  <- 6
 male2.reln$GEM <- 7
 male2.lacz$GEM <- 8
 
-#### Look at expression of plasmid "genes" of interest: mCherry, dCas9-KRAB-MeCP2 (scCustomize)
-# Create empty dataframe to store results
-gene_percents <- data.frame(matrix(ncol = 3, nrow = 8))
-row.names(gene_percents) <- c("male1.lacz", "male1.reln", "fem1.lacz", "fem1.reln", "fem2.lacz", "fem2.reln", "male2.reln", "male2.lacz")
-colnames(gene_percents) <- c("GEM", "mCherry", "dCas9")
-
-# Temp list of objects to loop over
-tempList <- list(male1.lacz, male1.reln, fem1.lacz, fem1.reln, fem2.lacz, fem2.reln, male2.reln, male2.lacz)
-
-# For each rat, calculate % cells expressing each gene of interest; add to table
-for (i in 1:8) {
-  gene_percents$GEM[i] <- tempList[[i]]$GEM
-  gene_percents$mCherry[i] <- Percent_Expressing(tempList[[i]], features = "mCherry")
-  gene_percents$dCas9[i] <- Percent_Expressing(tempList[[i]], features = "dCas9_KRAB_MeCP2")
-}
-
 # Normalize data under default parameters
 male1.lacz <- NormalizeData(male1.lacz)
 male1.reln <- NormalizeData(male1.reln)
@@ -186,12 +169,21 @@ saveRDS(male2.reln, "male2.reln.rds")
 saveRDS(male2.lacz, "male2.lacz.rds")
 
 # Integrate datasets
-anchors.allRats <- FindIntegrationAnchors(object.list = list(male1.lacz, male1.reln, fem1.lacz, fem1.reln, fem2.lacz, fem2.reln, male2.reln, male2.lacz), dims = 1:17)
+anchors.allRats <- FindIntegrationAnchors(object.list = list(male1.lacz, 
+                                                             male1.reln, 
+                                                             fem1.lacz, 
+                                                             fem1.reln, 
+                                                             fem2.lacz, 
+                                                             fem2.reln, 
+                                                             male2.reln, 
+                                                             male2.lacz), 
+                                          dims = 1:17)
 allRats <- IntegrateData(anchorset = anchors.allRats, dims = 1:17)
 
-DefaultAssay(allRats) <- "integrated"
-
 ## ---3. INITIAL DIMENSIONALITY REDUCTION & CLUSTERING-------------------------------------------------------
+
+# Reset default assay to integrated
+DefaultAssay(allRats) <- "integrated"
 
 # Dimensionality reduction & clustering
 allRats <- ScaleData(allRats)
@@ -201,25 +193,24 @@ allRats <- FindNeighbors(allRats, reduction = "pca", dims = 1:17)
 allRats <- FindClusters(allRats, resolution = 0.3)
 
 # Visualize UMAP clustering
-DefaultAssay(allRats) <- "integrated"
 DimPlot(object = allRats, reduction = "umap", label = TRUE) + NoLegend()
-
-# Reset default assay
-DefaultAssay(allRats) <- "RNA"
 
 ## ---4. IDENTIFY & LABEL CLUSTERS---------------------------------------------------------------------------
 
-# Find marker genes to label each cluster
-markers.allRats <- FindAllMarkers(allRats, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
-
-# Make stacked violin plot to confirm cluster identities by marker genes
-features <- c("Drd1", "Ebf1", "Drd2", "Penk", "Drd3", "Grm8", "Elavl2", "Chat", "Kit", "Sst", "Slc17a7", "Aqp4", "Gja1", "Arhgap15", "Rgs5", "Mbp", "Opalin", "Pdgfra", "Ppp1r1b", "Foxp2", "Bcl11b", "Gad1", "Syt1")
+## Make stacked violin plot to confirm cluster identities by marker genes
+# Vector of marker genes
+features <- c("Drd1", "Ebf1", "Drd2", "Penk", "Drd3", "Grm8", "Elavl2", 
+              "Chat", "Kit", "Sst", "Slc17a7", "Aqp4", "Gja1", "Arhgap15", 
+              "Rgs5", "Mbp", "Opalin", "Pdgfra", "Ppp1r1b", "Foxp2", "Bcl11b", 
+              "Gad1", "Syt1")
+# Reset default assay
 DefaultAssay(allRats) <- "RNA"
-stackedVln <- VlnPlot(allRats, features, stack = TRUE, sort = FALSE, flip = TRUE, fill.by = "ident") + theme(legend.position = "none")
+# Stacked violin plot
+stackedVln <- VlnPlot(allRats, features, stack = TRUE, sort = FALSE, flip = TRUE, fill.by = "ident") + 
+                   theme(legend.position = "none")
 stackedVln
 
 # Rename clusters - change names below as needed, based on marker genes
-# Can name uncertain clusters (i.e., not clear literature-based cluster) to NA but that might cause problems for metadata subsetting
 allRats <- RenameIdents(object = allRats,
                           "0" = "Drd2-MSN-1",
                           "1" = "Olig",
@@ -238,8 +229,12 @@ allRats <- RenameIdents(object = allRats,
                           "14" = "Drd3-MSN",
                           "15" = "Unk-2")
 
-levels(allRats) <- c("Drd1-MSN-1", "Drd1-MSN-2", "Drd2-MSN-1", "Drd2-MSN-2", "Drd3-MSN", "Grm8-MSN", "GABA-Undef", "Pvalb-Int", "Sst-Int", "Astrocyte", "Microglia", "Mural", "Olig", "Polydend", "Unk-1", "Unk-2")
+# Re-order the levels
+levels(allRats) <- c("Drd1-MSN-1", "Drd1-MSN-2", "Drd2-MSN-1", "Drd2-MSN-2", "Drd3-MSN", 
+                     "Grm8-MSN", "GABA-Undef", "Pvalb-Int", "Sst-Int", "Astrocyte", 
+                     "Microglia", "Mural", "Olig", "Polydend", "Unk-1", "Unk-2")
 
+DefaultAssay(allRats) <- "integrated"
 DimPlot(object = allRats, reduction = "umap", label = TRUE, repel = TRUE) + NoLegend()
 
 # Save labeled object + UMAP

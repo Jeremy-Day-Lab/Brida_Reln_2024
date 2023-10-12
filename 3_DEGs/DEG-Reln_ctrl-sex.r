@@ -20,10 +20,9 @@ library(pheatmap)
 allRats <- readRDS("allRats_souped_noDoub.rds")
 
 # Make sure cellType is correct after integrating & DoubletFinder
-# DESeq2 code below will error if cellType still includes NAs
 allRats$cellType <- Idents(allRats)
 
-# Create a sample ID column: dataset_sex_stim
+# Create a sample ID column: GEM_sex_stim
 allRats$sample.id <- as.factor(paste(allRats$GEM, allRats$sex_target, sep = "_"))
 # Named vector of sample names
 sample_ids <- purrr::set_names(levels(allRats$sample.id))
@@ -137,30 +136,7 @@ metadata$target    <- as.factor(as.character(lapply(strsplit(metadata$sex.target
 # NEW FUNCTIONS #
 #################
 
-deter_direc <- function(x) {
-  log_names <- c("avg_logFC", "avg_log2FC", "log2FC", "log2FoldChange")
-  log_select <- x %>% select(any_of(log_names))
-  ifelse(log_select <= 0, "down", ifelse(log_select >= 0, "up", "no_change"))
-}
-
-fromList <- function (input) {
-  # Same as original UpSetR::fromList(), but modified as shown in https://github.com/hms-dbmi/UpSetR/issues/85
-  # Thanks to @docmanny
-  elements <- unique(unlist(input))
-  data <- unlist(lapply(input, function(x) {
-    x <- as.vector(match(elements, x))
-  }))
-  data[is.na(data)] <- as.integer(0)
-  data[data != 0] <- as.integer(1)
-  data <- data.frame(matrix(data, ncol = length(input), byrow = F))
-  data <- data[which(rowSums(data) != 0), ]
-  names(data) <- names(input)
-  # Except now it conserves your original value names! (in this case gene names)
-  row.names(data) <- elements
-  return(data)
-}
-
-plot_output <- function(p, file_name, w_png=700, h_png=600, w_pdf=12, h_pdf=8, show_plot = TRUE){
+plot_output <- function(p, file_name, w_png = 700, h_png = 600, w_pdf = 12, h_pdf = 8, show_plot = TRUE){
   
   png(paste0(file_name,".png"), width = w_png, height = h_png)
   plot(eval(p))
@@ -176,7 +152,7 @@ plot_output <- function(p, file_name, w_png=700, h_png=600, w_pdf=12, h_pdf=8, s
 }
 
 # for pheatmaps as it uses grid system instead of ggplot
-pheatmap_output <- function(x, file_name, w_png=900, h_png=700, w_pdf=12, h_pdf=8) {
+pheatmap_output <- function(x, file_name, w_png = 900, h_png = 700, w_pdf = 12, h_pdf = 8) {
   
   png(paste0(file_name,".png"), width = w_png, height = h_png)
   
@@ -189,10 +165,6 @@ pheatmap_output <- function(x, file_name, w_png=900, h_png=700, w_pdf=12, h_pdf=
   grid::grid.newpage()
   grid::grid.draw(x$gtable)
   dev.off()
-}
-
-nested_lapply <- function(data, FUN) {
-  lapply(data, function(sublist) { lapply(sublist, FUN) })
 }
 
 #####################################
@@ -241,11 +213,6 @@ dds_all_cells <- mapply(FUN = function(x, z) {
   return(x)
 }, x = dds_all_cells, z = gsub("-", ".", names(dds_all_cells)))
 
-# Check to see how many rows with counts > 5
-mapply(FUN = function(x){
-  message(paste0(nrow(counts(x))))
-}, x = dds_all_cells)
-
 ###################
 # QUALITY CONTROL #
 ###################
@@ -255,7 +222,6 @@ dir.create("DESeq2_QC")
 
 mapply(FUN = function(x, z) {
   vsd <- varianceStabilizingTransformation(x, blind = FALSE)
-  vsd
   
   # PCA
   #-----------------Target-------------------
@@ -400,5 +366,3 @@ write.table(x         = DEGs_DF,
             col.names = TRUE,
             row.names = FALSE,
             quote     = FALSE)
-
-
