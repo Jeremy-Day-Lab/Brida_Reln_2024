@@ -22,3 +22,5 @@ cellranger mkref --genome=mRatBN7_2 \
                  --nthreads=6
 
 date
+
+exit 0
