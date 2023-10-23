@@ -108,7 +108,47 @@ head(count_aggr)
 ## Astrocyte_6_female_reln . 3  9 . 2 0 21 4 7 3 1 13 9 2 . 5 . 18 . 3 1 1 1 .
 ```
 
-Now we need to create a separate counts matrix for each cell type and combine those matrices into a list named `raw_counts_list`. The original efficient code to do this fails with our data, probably because some samples don't have at least 1 cell from every cell type (samples S3 and S4 don't have Drd3-MSN, and sample S5 doesn't have Pvalb-Int). The extremely bulky code below is a workaround. It's ugly, but it works.
+Now we need to create a separate counts matrix for each cell type and combine those matrices into a list named `raw_counts_list`. Here is the original code to accomplish this (*don't run this*):
+
+```
+# Turn into a list, and split list into components for each cluster
+# Transform so that in each cluster: rows = genes; cols = cluster_sampleID
+raw_counts_list2 <- split.data.frame(
+  count_aggr,
+  factor(gsub("-", ".", cluster_names)) #replacing - with .
+) %>%
+  lapply(function(x) {
+    magrittr::set_colnames(t(x), gsub("-", ".", rownames(x)))
+  })
+```
+
+Here's the problem: using `cluster_names` to split this dataframe doesn't work properly because notice above how `count_aggr` is sorted: by cluster first (e.g., all Astrocyte samples together). The way `split.data.frame()` works is to take each row in the dataframe and assign it to each item on the factors list in sequence (recycling the factors). So for example, the sample Astrocyte_1_male_lacz would be placed in the first group on the `cluster_names` list: Drd1.MSN. Astrocyte_2_male_reln would be placed in Drd2.MSN.1, etc. Like this:
+
+![bad counts matrix](images/9a_counts_matrix_bad.jpg)
+
+This obviously isn't what we want. But it works when `count_aggr` is sorted by *sample ID*... as is the case when we run an older dataset:
+
+```
+## 6 x 24193 sparse Matrix of class "dgCMatrix"
+##   [[ suppressing 62 column names ‘ENSRNOG00000066169’, ‘Irgq’, ‘Doc2g’ ... ]]
+##                                                                                                                                        
+## Drd1-MSN-1_acute_fem_coc . 43  9 1 2 1 53 935 2 11 829 4 1 347 92 1024 . 6
+## Drd1-MSN-2_acute_fem_coc . 13  2 1 . . 19 189 1  1 181 . 1  74 22  111 . .
+## Drd2-MSN-1_acute_fem_coc . 35 10 . 3 2 75 744 7  7 613 1 1 319 76  711 . 4
+## Drd2-MSN-2_acute_fem_coc .  3  . . . .  8  44 .  1  49 . .  31  5   18 . .
+## Drd3-MSN_acute_fem_coc   .  .  . . . .  .   . .  .   . . .   .  1    . . .
+## Grm8-MSN_acute_fem_coc   . 19  2 . 1 . 18 275 1  5 192 . . 118 38    7 . 1
+```
+
+See the difference? The rows on the table above are sorted by sample ID; for example, all clusters for the acute_fem_coc sample are together. So the original code to split the dataframe would work because the first row would go to group Drd1-MSN-1, the next row to Drd1-MSN-2, and so on:
+
+![good counts matrix](images/9b_counts_matrix_good.jpg)
+
+But for some reason I can't figure out, `Matrix.utils::aggregate.Matrix()` is sorting our dataset by cluster instead of by sample ID. The original code also would not work with our data anyway because some samples don't have at least 1 cell from every cell type (samples S3 and S4 don't have Drd3-MSN, and sample S5 doesn't have Pvalb-Int).
+
+There is an extremely cumbersome workaround here to get the `raw_counts_list`, but don't do this.
+
+<details><summary>Extremely cumbersome workaround</summary>
 
 ```
 # Make lists of rows to keep for subsets
@@ -168,6 +208,25 @@ colnames(raw_counts_list[[9]]) <- c("Sst.Int_1_male_lacz","Sst.Int_2_male_reln",
 rm(list=ls(pattern="subset_"))
 rm(list=ls(pattern="keep_rows_"))
 ```
+
+</details>
+
+Instead, all we have to do is replace our factor vector in the code to use the first part of the row names of `count_aggr` instead of using `cluster_names`. The row names are formatted like **Drd1-MSN_2_male_reln**, so we will split the name by underscores, take only the first part, and change any dashes to periods:
+
+```
+# Turn into a list, and split list into components for each cluster
+# Transform so that in each cluster: rows = genes; cols = cluster_sampleID
+raw_counts_list <- split.data.frame(
+  count_aggr,
+  as.factor(gsub("-", ".", lapply(strsplit(rownames(count_aggr),"_"),"[",1) %>%
+                  unlist()))
+) %>%
+  lapply(function(x) {
+    magrittr::set_colnames(t(x), gsub("-", ".", rownames(x)))
+  })
+```
+
+The second part, `magrittr::set_colnames()`, transposes the resulting matrix and sets column names to the old row names (and subs periods for dashes, had we not already done so).
 
 ## 3. More metadata (sample-level)
 

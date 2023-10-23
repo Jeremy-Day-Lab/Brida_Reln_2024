@@ -20,9 +20,10 @@ library(pheatmap)
 allRats <- readRDS("allRats_souped_noDoub.rds")
 
 # Make sure cellType is correct after integrating & DoubletFinder
+# DESeq2 code below will error if cellType still includes NAs
 allRats$cellType <- Idents(allRats)
 
-# Create a sample ID column: GEM_sex_stim
+# Create a sample ID column: dataset_sex_stim
 allRats$sample.id <- as.factor(paste(allRats$GEM, allRats$sex_target, sep = "_"))
 # Named vector of sample names
 sample_ids <- purrr::set_names(levels(allRats$sample.id))
@@ -47,72 +48,19 @@ groups <- allRats@meta.data[, c("cellType", "sample.id")]
 count_aggr <- Matrix.utils::aggregate.Matrix(t(allRats@assays$RNA@counts), 
                                              groupings = groups, fun = "sum") 
 
-# Original code below to create raw_counts_list fails with this data,
-# because 2 clusters don't contain cells from all 8 datasets (Drd3-MSN missing 3 & 4; Pvalb-Int missing 5).
-# This is a cumbersome workaround, but it works.
-
-# Make lists for subsets:
-keep_rows_astro <- c("Astrocyte_1_male_lacz", "Astrocyte_2_male_reln", "Astrocyte_3_female_lacz", "Astrocyte_4_female_reln", "Astrocyte_5_female_lacz", "Astrocyte_6_female_reln", "Astrocyte_7_male_reln", "Astrocyte_8_male_lacz")
-keep_rows_Drd1 <- c("Drd1-MSN_1_male_lacz", "Drd1-MSN_2_male_reln", "Drd1-MSN_3_female_lacz", "Drd1-MSN_4_female_reln", "Drd1-MSN_5_female_lacz", "Drd1-MSN_6_female_reln", "Drd1-MSN_7_male_reln", "Drd1-MSN_8_male_lacz")
-keep_rows_Drd2.1 <- c("Drd2-MSN-1_1_male_lacz", "Drd2-MSN-1_2_male_reln", "Drd2-MSN-1_3_female_lacz", "Drd2-MSN-1_4_female_reln", "Drd2-MSN-1_5_female_lacz", "Drd2-MSN-1_6_female_reln", "Drd2-MSN-1_7_male_reln", "Drd2-MSN-1_8_male_lacz")
-keep_rows_Drd2.2 <- c("Drd2-MSN-2_1_male_lacz", "Drd2-MSN-2_2_male_reln", "Drd2-MSN-2_3_female_lacz", "Drd2-MSN-2_4_female_reln", "Drd2-MSN-2_5_female_lacz", "Drd2-MSN-2_6_female_reln", "Drd2-MSN-2_7_male_reln", "Drd2-MSN-2_8_male_lacz")
-keep_rows_Drd3 <- c("Drd3-MSN_1_male_lacz", "Drd3-MSN_2_male_reln", "Drd3-MSN_3_female_lacz", "Drd3-MSN_4_female_reln", "Drd3-MSN_5_female_lacz", "Drd3-MSN_6_female_reln", "Drd3-MSN_7_male_reln", "Drd3-MSN_8_male_lacz")
-keep_rows_grm8 <- c("Grm8-MSN_1_male_lacz", "Grm8-MSN_2_male_reln", "Grm8-MSN_3_female_lacz", "Grm8-MSN_4_female_reln", "Grm8-MSN_5_female_lacz", "Grm8-MSN_6_female_reln", "Grm8-MSN_7_male_reln", "Grm8-MSN_8_male_lacz")
-keep_rows_gaba <- c("GABA-Undef_1_male_lacz", "GABA-Undef_2_male_reln", "GABA-Undef_3_female_lacz", "GABA-Undef_4_female_reln", "GABA-Undef_5_female_lacz", "GABA-Undef_6_female_reln", "GABA-Undef_7_male_reln", "GABA-Undef_8_male_lacz")
-keep_rows_pvalb <- c("Pvalb-Int_1_male_lacz", "Pvalb-Int_2_male_reln", "Pvalb-Int_3_female_lacz", "Pvalb-Int_4_female_reln", "Pvalb-Int_5_female_lacz", "Pvalb-Int_6_female_reln", "Pvalb-Int_7_male_reln", "Pvalb-Int_8_male_lacz")
-keep_rows_sst <- c("Sst-Int_1_male_lacz", "Sst-Int_2_male_reln", "Sst-Int_3_female_lacz", "Sst-Int_4_female_reln", "Sst-Int_5_female_lacz", "Sst-Int_6_female_reln", "Sst-Int_7_male_reln", "Sst-Int_8_male_lacz")
-keep_rows_micro <- c("Microglia_1_male_lacz", "Microglia_2_male_reln", "Microglia_3_female_lacz", "Microglia_4_female_reln", "Microglia_5_female_lacz", "Microglia_6_female_reln", "Microglia_7_male_reln", "Microglia_8_male_lacz")
-keep_rows_mural <- c("Mural_1_male_lacz", "Mural_2_male_reln", "Mural_3_female_lacz", "Mural_4_female_reln", "Mural_5_female_lacz", "Mural_6_female_reln", "Mural_7_male_reln", "Mural_8_male_lacz")
-keep_rows_olig <- c("Olig_1_male_lacz", "Olig_2_male_reln", "Olig_3_female_lacz", "Olig_4_female_reln", "Olig_5_female_lacz", "Olig_6_female_reln", "Olig_7_male_reln", "Olig_8_male_lacz")
-keep_rows_poly <- c("Polydend_1_male_lacz", "Polydend_2_male_reln", "Polydend_3_female_lacz", "Polydend_4_female_reln", "Polydend_5_female_lacz", "Polydend_6_female_reln", "Polydend_7_male_reln", "Polydend_8_male_lacz")
-
-# Create subsets
-subset_astro <- t(count_aggr[rownames(count_aggr) %in% keep_rows_astro, ])
-subset_Drd1 <- t(count_aggr[rownames(count_aggr) %in% keep_rows_Drd1, ])
-subset_Drd2.1 <- t(count_aggr[rownames(count_aggr) %in% keep_rows_Drd2.1, ])
-subset_Drd2.2 <- t(count_aggr[rownames(count_aggr) %in% keep_rows_Drd2.2, ])
-subset_Drd3 <- t(count_aggr[rownames(count_aggr) %in% keep_rows_Drd3, ])
-subset_grm8 <- t(count_aggr[rownames(count_aggr) %in% keep_rows_grm8, ])
-subset_gaba <- t(count_aggr[rownames(count_aggr) %in% keep_rows_gaba, ])
-subset_pvalb <- t(count_aggr[rownames(count_aggr) %in% keep_rows_pvalb, ])
-subset_sst <- t(count_aggr[rownames(count_aggr) %in% keep_rows_sst, ])
-subset_micro <- t(count_aggr[rownames(count_aggr) %in% keep_rows_micro, ])
-subset_mural <- t(count_aggr[rownames(count_aggr) %in% keep_rows_mural, ])
-subset_olig <- t(count_aggr[rownames(count_aggr) %in% keep_rows_olig, ])
-subset_poly <- t(count_aggr[rownames(count_aggr) %in% keep_rows_poly, ])
-
-# Combine subsets into a list
-raw_counts_list <- list(subset_astro, subset_Drd1, subset_Drd2.1, subset_Drd2.2, subset_Drd3, subset_grm8, subset_gaba, subset_pvalb, subset_sst, subset_micro, subset_mural, subset_olig, subset_poly)
-# Add sublist names
-names(raw_counts_list) <- c("Astrocyte", "Drd1.MSN", "Drd2.MSN.1", "Drd2.MSN.2", "Drd3.MSN", "Grm8.MSN", "GABA.Undef", "Pvalb.Int", "Sst.Int", "Microglia", "Mural", "Olig", "Polydend")
-
-# Replace - with . in cluster names only
-# Omit any missing datasets! (here, 3 & 4 for Drd3-MSN; 5 for Pvalb-Int)
-colnames(raw_counts_list[[2]]) <- c("Drd1.MSN_1_male_lacz","Drd1.MSN_2_male_reln","Drd1.MSN_3_female_lacz","Drd1.MSN_4_female_reln","Drd1.MSN_5_female_lacz","Drd1.MSN_6_female_reln","Drd1.MSN_7_male_reln","Drd1.MSN_8_male_lacz")
-colnames(raw_counts_list[[3]]) <- c("Drd2.MSN.1_1_male_lacz","Drd2.MSN.1_2_male_reln","Drd2.MSN.1_3_female_lacz","Drd2.MSN.1_4_female_reln","Drd2.MSN.1_5_female_lacz","Drd2.MSN.1_6_female_reln","Drd2.MSN.1_7_male_reln","Drd2.MSN.1_8_male_lacz")
-colnames(raw_counts_list[[4]]) <- c("Drd2.MSN.2_1_male_lacz","Drd2.MSN.2_2_male_reln","Drd2.MSN.2_3_female_lacz","Drd2.MSN.2_4_female_reln","Drd2.MSN.2_5_female_lacz","Drd2.MSN.2_6_female_reln","Drd2.MSN.2_7_male_reln","Drd2.MSN.2_8_male_lacz")
-colnames(raw_counts_list[[5]]) <- c("Drd3.MSN_1_male_lacz","Drd3.MSN_2_male_reln","Drd3.MSN_5_female_lacz","Drd3.MSN_6_female_reln","Drd3.MSN_7_male_reln","Drd3.MSN_8_male_lacz")
-colnames(raw_counts_list[[6]]) <- c("Grm8.MSN_1_male_lacz","Grm8.MSN_2_male_reln","Grm8.MSN_3_female_lacz","Grm8.MSN_4_female_reln","Grm8.MSN_5_female_lacz","Grm8.MSN_6_female_reln","Grm8.MSN_7_male_reln","Grm8.MSN_8_male_lacz")
-colnames(raw_counts_list[[7]]) <- c("GABA.Undef_1_male_lacz","GABA.Undef_2_male_reln","GABA.Undef_3_female_lacz","GABA.Undef_4_female_reln","GABA.Undef_5_female_lacz","GABA.Undef_6_female_reln","GABA.Undef_7_male_reln","GABA.Undef_8_male_lacz")
-colnames(raw_counts_list[[8]]) <- c("Pvalb.Int_1_male_lacz","Pvalb.Int_2_male_reln","Pvalb.Int_3_female_lacz","Pvalb.Int_4_female_reln","Pvalb.Int_6_female_reln","Pvalb.Int_7_male_reln","Pvalb.Int_8_male_lacz")
-colnames(raw_counts_list[[9]]) <- c("Sst.Int_1_male_lacz","Sst.Int_2_male_reln","Sst.Int_3_female_lacz","Sst.Int_4_female_reln","Sst.Int_5_female_lacz","Sst.Int_6_female_reln","Sst.Int_7_male_reln","Sst.Int_8_male_lacz")
-
-rm(list=ls(pattern="subset_"))
-rm(list=ls(pattern="keep_rows_"))
-
-#### This is the code that doesn't work with this data...
 # Turn into a list, and split list into components for each cluster
 # Transform so that in each cluster: rows = genes; cols = cluster_sampleID
-# raw_counts_list <- split.data.frame(
-#   count_aggr,
-#   #  factor(cluster_names) # Changing list names from - to . is optional
-#   factor(gsub("-", ".", cluster_names)) # Changing list names from - to . is optional
-# ) %>%
-#   lapply(function(x) {
-#     magrittr::set_colnames(t(x), gsub("-", ".", rownames(x)))
-#   })
-
-######### START AGAIN HERE ###########
+raw_counts_list <- split.data.frame(
+  count_aggr,
+  # This (below) should work on ANY dataset; uses rownames of count_aggr instead of cluster_names
+  as.factor(gsub("-", ".", lapply(strsplit(rownames(count_aggr),"_"),"[",1) %>% 
+                   unlist()))
+  # This (below) only works if count_aggr is sorted by sample id AND all samples have all cluster types
+  # factor(gsub("-", ".", cluster_names))
+) %>%
+  lapply(function(x) {
+    magrittr::set_colnames(t(x), gsub("-", ".", rownames(x)))
+  })
 
 ##### Sample-level metadata
 get_sample_ids <- function(x){
@@ -136,7 +84,7 @@ metadata$target    <- as.factor(as.character(lapply(strsplit(metadata$sex.target
 # NEW FUNCTIONS #
 #################
 
-plot_output <- function(p, file_name, w_png = 700, h_png = 600, w_pdf = 12, h_pdf = 8, show_plot = TRUE){
+plot_output <- function(p, file_name, w_png=700, h_png=600, w_pdf=12, h_pdf=8, show_plot = TRUE){
   
   png(paste0(file_name,".png"), width = w_png, height = h_png)
   plot(eval(p))
@@ -152,7 +100,7 @@ plot_output <- function(p, file_name, w_png = 700, h_png = 600, w_pdf = 12, h_pd
 }
 
 # for pheatmaps as it uses grid system instead of ggplot
-pheatmap_output <- function(x, file_name, w_png = 900, h_png = 700, w_pdf = 12, h_pdf = 8) {
+pheatmap_output <- function(x, file_name, w_png=900, h_png=700, w_pdf=12, h_pdf=8) {
   
   png(paste0(file_name,".png"), width = w_png, height = h_png)
   
@@ -166,6 +114,10 @@ pheatmap_output <- function(x, file_name, w_png = 900, h_png = 700, w_pdf = 12, 
   grid::grid.draw(x$gtable)
   dev.off()
 }
+
+# nested_lapply <- function(data, FUN) {
+#   lapply(data, function(sublist) { lapply(sublist, FUN) })
+# }
 
 #####################################
 # Create a DESEqDataSet from object #
@@ -222,6 +174,7 @@ dir.create("DESeq2_QC")
 
 mapply(FUN = function(x, z) {
   vsd <- varianceStabilizingTransformation(x, blind = FALSE)
+  vsd
   
   # PCA
   #-----------------Target-------------------
@@ -366,3 +319,5 @@ write.table(x         = DEGs_DF,
             col.names = TRUE,
             row.names = FALSE,
             quote     = FALSE)
+
+
