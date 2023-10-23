@@ -211,14 +211,16 @@ rm(list=ls(pattern="keep_rows_"))
 
 </details>
 
-Instead, all we have to do is replace our factor vector in the code to use the first part of the row names of `count_aggr` instead of using `cluster_names`. The row names are formatted like **Drd1-MSN_2_male_reln**, so we will split the name by underscores, take only the first part, and change any dashes to periods:
+Instead, all we have to do is replace our factor vector in the code to use the first part of the row names of `count_aggr` instead of using `cluster_names`. The row names are formatted like **Drd1-MSN_2_male_reln**, so we will split the name by underscores, take only the first part, and change any dashes to periods.
+
+Note: `[` is actually a function in R to subset an object. The `1` means take the first index for the subset. So for every row name we've split by underscore, we're applying the `[` function to take the first part of the name:
 
 ```
 # Turn into a list, and split list into components for each cluster
 # Transform so that in each cluster: rows = genes; cols = cluster_sampleID
 raw_counts_list <- split.data.frame(
   count_aggr,
-  as.factor(gsub("-", ".", lapply(strsplit(rownames(count_aggr),"_"),"[",1) %>%
+  as.factor(gsub("-", ".", lapply(strsplit(rownames(count_aggr), "_"), "[", 1) %>%
                   unlist()))
 ) %>%
   lapply(function(x) {
