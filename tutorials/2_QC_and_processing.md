@@ -14,6 +14,7 @@ R is a computer coding language. In order to run RStudio (graphical user interfa
 Definitely download an installer (exe or dmg), not a zip/tarball. There should be a large blue button at the top of the page with the recommended version. Just click that to download.
 
 **Need to learn basic R?** [Here is a great starting point!](https://rstudio-education.github.io/hopr/project-1-weighted-dice.html)
+* DON'T SKIP THIS STEP if you are new to R. You will not be able to successfully understand these tutorials and troubleshoot your data analysis if you don't have a basic familiarity with R programming. This is your responsibility. Take the time to go through the intro linked above - in particular, Project 1 (Weighted Dice) and Project 2 (Playing Cards). These tutorials cover many critical basic concepts like syntax, packages, object types, functions, and modifying values. You absolutely need to know these things before moving forward.
 
 ## Setup
 
