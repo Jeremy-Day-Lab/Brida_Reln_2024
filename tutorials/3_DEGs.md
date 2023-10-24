@@ -108,7 +108,7 @@ head(count_aggr)
 ## Astrocyte_6_female_reln . 3  9 . 2 0 21 4 7 3 1 13 9 2 . 5 . 18 . 3 1 1 1 .
 ```
 
-Now we need to create a separate counts matrix for each cell type and combine those matrices into a list named `raw_counts_list`. Here is the original code to accomplish this (*don't run this*):
+Now we need to create a separate counts matrix for each cell type and combine those matrices into a list named `raw_counts_list`. Here is the original code to accomplish this, as written for [Phillips et al. 2023](https://github.com/Jeremy-Day-Lab/Phillips_2023_NAc/blob/main/Finalized_Scripts/DEGs/CocaineDEGs_v2.R) (*don't run this*):
 
 ```
 # Turn into a list, and split list into components for each cluster
@@ -122,11 +122,11 @@ raw_counts_list2 <- split.data.frame(
   })
 ```
 
-Here's the problem: using `cluster_names` to split this dataframe doesn't work properly because notice above how `count_aggr` is sorted: by cluster first (e.g., all Astrocyte samples together). The way `split.data.frame()` works is to take each row in the dataframe and assign it to each item on the factors list in sequence (recycling the factors). So for example, the sample Astrocyte_1_male_lacz would be placed in the first group on the `cluster_names` list: Drd1.MSN. Astrocyte_2_male_reln would be placed in Drd2.MSN.1, etc. Like this:
+Here's the problem: using `cluster_names` to split this dataframe doesn't work properly with our data here because notice above how `count_aggr` is sorted: by cluster first (e.g., all Astrocyte samples together). The way `split.data.frame()` works is to take each row in the dataframe and assign it to each item on the factors list in sequence (recycling the factors). So for example, the sample Astrocyte_1_male_lacz would be placed in the first group on the `cluster_names` list: Drd1.MSN. Astrocyte_2_male_reln would be placed in Drd2.MSN.1, etc. Like this:
 
 ![bad counts matrix](images/9a_counts_matrix_bad.jpg)
 
-This obviously isn't what we want. But it works when `count_aggr` is sorted by *sample ID*... as is the case when we run an older dataset:
+This obviously isn't what we want. But it works when `count_aggr` is sorted by *sample ID*... as is the case when we run the older dataset from Phillips et al. 2023:
 
 ```
 ## 6 x 24193 sparse Matrix of class "dgCMatrix"
