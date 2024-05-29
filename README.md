@@ -24,9 +24,9 @@ Analysis of integrated R object from [Phillips et al. 2023 (Mol. Cell. Neurosci.
 
 1. [CellRanger files](3_Reln_CRISPRi_snRNAseq/1_CellRanger)
 2. Creating Seurat object
- 1. [SoupX and assay integration](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/1_SoupX_and_integration.r)
- 2. [DoubletFinder and cell-type annotation](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/DoubletFinder_and_obj_annotation.r)
- 3. [Bar plots](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/3_Fig4c_barplots.r) (Fig. 4c)
+   1. [SoupX and assay integration](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/1_SoupX_and_integration.r)
+   2. [DoubletFinder and cell-type annotation](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/DoubletFinder_and_obj_annotation.r)
+   3. [Bar plots](3_Reln_CRISPRi_snRNAseq/2_Seurat_object_creation/3_Fig4c_barplots.r) (Fig. 4c)
 3. [DEG testing](3_Reln_CRISPRi_snRNAseq/3_DEGs/README.md)
 4. [Pseudotime](3_Reln_CRISPRi_snRNAseq/Fig4h_Pseudotime_Drd1_noReln.R) (Fig. 4h)
 5. [Correlation matrix](3_Reln_CRISPRi_snRNAseq/FigS7a_CorrelationMatrix_Combined_MarkerGenesV2.R) (Fig. S7a)
