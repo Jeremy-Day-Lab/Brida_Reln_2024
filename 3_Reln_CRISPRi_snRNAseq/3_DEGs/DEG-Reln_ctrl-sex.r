@@ -321,3 +321,25 @@ write.table(x         = DEGs_DF,
             quote     = FALSE)
 
 
+### ------------ Volcano Plot for Drd1-------------------------------------------------------
+
+library(ggrepel)
+
+# Volcano plot to label top 10 signif DEGs (sorted by padj) pos and neg
+VP1 <- ggplot(Drd1_all, aes(x = log2FoldChange, y = -log10(padj))) +
+  geom_point(colour = "grey") +
+  geom_point(data = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange >= 0.5)), color = "dodgerblue3") +
+  geom_point(data = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange <= (-0.5))), color = "firebrick3") +
+  scale_x_continuous(limits = c(-2, 2), breaks = seq(-2, 2, by = 1), minor_breaks = seq(-2, 2, by = 0.5), expand = c(0,0)) +
+  scale_y_continuous(limits = c(0, 12), expand = c(0,0)) +
+  geom_hline(yintercept = -log10(0.05), lty = 2, col = "darkgray") +
+  geom_vline(xintercept = c(-0.5, 0.5), lty = 2, col = "darkgray") +
+  geom_text_repel(data  = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange < -0.5))[order(subset(Drd1_all,subset=(padj <= 0.05 & log2FoldChange <0))$padj,decreasing=FALSE)[1:10],],
+                  label = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange < -0.5))[order(subset(Drd1_all,subset=(padj <= 0.05 & log2FoldChange <0))$padj,decreasing=FALSE)[1:10],"gene"]) +
+  geom_text_repel(data  = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange >0.5))[order(subset(Drd1_all,subset=(padj <= 0.05 & log2FoldChange >0))$padj,decreasing=FALSE)[1:10],],
+                  label = subset(Drd1_all, subset = (padj <= 0.05 & log2FoldChange >0.5))[order(subset(Drd1_all,subset=(padj <= 0.05 & log2FoldChange >0))$padj,decreasing=FALSE)[1:10],"gene"]) +
+  theme_bw() + theme(axis.ticks.length=unit(.25, "cm")) +
+  NoGrid() +
+  xlab(bquote(log[2] ~ "(Fold change)")) + ylab(bquote(-log[10] ~ "(Adjusted p-value)"))
+
+VP1

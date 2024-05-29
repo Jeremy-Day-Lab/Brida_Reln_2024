@@ -1,0 +1,23 @@
+# names/email
+# email: set your email here and uncomment
+multiqc_title: "2023-JD-0063"
+
+# input samplesheet
+input: "./samplesheet.csv"
+
+# Genome references
+fasta: "/data/project/daylab/Genome-Reference/Genomes/mRatBN7.2/Ensembl/Rattus_norvegicus.mRatBN7.2.dna.toplevel.fa"
+gtf: "/data/project/daylab/Genome-Reference/Genomes/mRatBN7.2/Ensembl/Rattus_norvegicus.mRatBN7.2.105.gtf"
+
+# Other parameters
+gencode: false
+trim_nextseq: 20
+aligner: "star_salmon"
+pseudo_aligner: "salmon"
+extra_salmon_quant_args: "--seqBias --gcBias"
+save_unaligned: true
+save_align_intermeds: false
+deseq2_vst: true
+save_reference: true
+skip_markduplicates: true
+skip_dupradar: true # pointless unless mark duplicates is enabled

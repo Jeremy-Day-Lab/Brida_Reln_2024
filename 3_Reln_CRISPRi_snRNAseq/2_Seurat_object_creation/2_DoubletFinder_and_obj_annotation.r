@@ -1,8 +1,8 @@
-##########################################################
-##                                                      ##
-## SEURAT & DOUBLETFINDER - FINDING & REMOVING DOUBLETS ##
-##                                                      ##
-##########################################################
+#################################################
+##                                             ##
+## DOUBLETFINDER - FINDING & REMOVING DOUBLETS ##
+##                                             ##
+#################################################
 
 # Load libraries
 library(Seurat)
@@ -626,6 +626,10 @@ horizVln <- ggplot(allRats.noDoublets.DF, aes(factor(Feat), Expr, fill = Idents)
                      axis.text.x = element_text(size = 14, angle = 60, hjust = 1)) +
                xlab("Gene") + ylab("Expression Level")
 
+#######################
+# ANNOTATE CELL TYPES #
+#######################
+
 # Rename clusters - change names below as needed, based on marker genes
 allRats.noDoublets <- RenameIdents(object = allRats.noDoublets,
                           "0" = "Drd1-MSN",
@@ -649,27 +653,3 @@ DimPlot(object = allRats.noDoublets, reduction = "umap") + NoLegend()
 
 # Save labeled object + UMAP
 saveRDS(allRats.noDoublets, "allRats_souped_noDoub.rds")
-
-##########################################
-# RANDOM HELPFUL CODE FOR EXPORTING DATA #
-##########################################
-
-# To export just the object metadata
-allRats.noDoublets.metadata <- allRats.noDoublets@meta.data
-write_csv(allRats.noDoublets.metadata, "allRats_noDoubs_metadata.csv")
-
-# If you want to export just the object counts
-write.table(as.matrix(GetAssayData(allRats, slot = "counts")), 
-            'allRats_counts.csv', 
-            sep = ',', row.names = T, col.names = T, quote = F)
-
-# Getting list of genes expressed in each cell type
-avg_expression <- AverageExpression(allRats, assays = "RNA", slot = "data")
-expression_matrix <- as.data.frame(avg_expression)
-write.csv(expression_matrix, "average_expression.csv", row.names = T, quote = F)
-
-# Subset integrated object to contain only genes expressed in at least 10 cells
-filtered <- rownames(allRats)[Matrix::rowSums(allRats) > 10]
-filtered_data <- subset(allRats, features = filtered)
-filtered_mtx <- as.matrix(GetAssayData(filtered_data, slot = "counts"))
-write.table(filtered_mtx, "allRats_counts.csv", sep = ",", row.names = T, col.names = T, quote = F)
