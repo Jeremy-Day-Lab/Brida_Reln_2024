@@ -81,8 +81,8 @@ write.csv(results_by_OT, "/Users/kbrida/Desktop/Manuscript/Data&Code/ManhattantP
 
 write.csv(merged_results, "/Users/kbrida/Desktop/Manuscript/Data&Code/ManhattantPlot/all_merged_results.csv")
 
-#Want to identify how many mismatches there are for each gene & I am an R infant 
-#so apologies super clunky way to ID how many mismatches for off target
+#Want to identify how many mismatches there are for each gene
+#clunky way to ID how many mismatches for off target
 OT_df_4mm <- subset(OffTarget_df, subset = OffTarget_df$Mismatches == 4)
 OT_df_3mm <- subset(OffTarget_df, subset = OffTarget_df$Mismatches == 3)
 OT_df_2mm <- subset(OffTarget_df, subset = OffTarget_df$Mismatches == 2)
@@ -158,7 +158,7 @@ CRISPRi_man$color <- ifelse(CRISPRi_man$Mismatches == 4, "#F5BABD",
 #generate manhattan
 manhattan(CRISPRi_man)
 #this plot will likely appear as if nothing has worked because the non-highlighted genes
-#far out-number the higlhighted ones. I am an R infant and so I export this plot and open 
+#far out-number the higlhighted ones. I export this plot and open 
 #in illustrator. First release all clipping masks. 
 #From there select one gray dot and then Select>Same>Appearance
 #this will select all gray dots, send them to the back and repeat with black
